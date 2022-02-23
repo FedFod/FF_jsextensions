@@ -14,7 +14,14 @@ Vector.prototype = {
 			this.x += v.x;
 			this.y += v.y;
 			this.z += v.z;
-		} else {
+		}
+		else if (v instanceof Array)
+		{
+			this.x += v[0];
+			this.y += v[1];
+			this.z += v[2];
+		} 
+		else {
 			this.x += v;
 			this.y += v;
 			this.z += v;
@@ -22,10 +29,23 @@ Vector.prototype = {
 	},
 
 	addNew: function(v) {
-		var aX = this.x + v.x;
-		var aY = this.y + v.y;
-		var aZ = this.z + v.z;
-
+		var aX=this.x; var aY=this.y; var aZ=this.z;
+		if (v instanceof Vector) {
+			aX += v.x;
+			aY += v.y;
+			aZ += v.z;
+		}
+		else if (v instanceof Array)
+		{
+			aX += v[0];
+			aY += v[1];
+			aZ += v[2];
+		} 
+		else {
+			aX += v;
+			aY += v;
+			aZ += v;
+		}
 		return new Vector(aX, aY, aZ);
 	},
 
@@ -133,6 +153,10 @@ Vector.prototype = {
 
 	toArray: function() {
 		return [this.x, this.y, this.z];
+	},
+
+	getCopy: function() {
+		return new Vector(this.x, this.y, this.z);
 	}
 };
 
