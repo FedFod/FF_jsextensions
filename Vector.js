@@ -1,16 +1,34 @@
 
 // Vector class
-function Vector(x, y, z) {
-
-	this.x = x || 0.0;
-	this.y = y || 0.0;
-	this.z = z || 0.0;
+function FF_Vector(x, y, z) {
+	if (x instanceof Array)
+	{	
+		this.x = x[0];
+		this.y = x[1];
+		this.z = 0;
+		if (x.length > 2)
+		{
+			this.z = x[2];
+		}
+	} 
+	else if (x instanceof FF_Vector)
+	{
+		this.x = x.x;
+		this.y = x.y;
+		this.z = x.z;
+	} 
+	else
+	{
+		this.x = x || 0.0;
+		this.y = y || 0.0;
+		this.z = z || 0.0;
+	}
 };
 
-Vector.prototype = {
+FF_Vector.prototype = {
 
 	add: function(v) {
-		if (v instanceof Vector) {
+		if (v instanceof FF_Vector) {
 			this.x += v.x;
 			this.y += v.y;
 			this.z += v.z;
@@ -19,7 +37,10 @@ Vector.prototype = {
 		{
 			this.x += v[0];
 			this.y += v[1];
-			this.z += v[2];
+			if (v.length > 2)
+			{
+				this.z += v[2];
+			}
 		} 
 		else {
 			this.x += v;
@@ -30,7 +51,7 @@ Vector.prototype = {
 
 	addNew: function(v) {
 		var aX=this.x; var aY=this.y; var aZ=this.z;
-		if (v instanceof Vector) {
+		if (v instanceof FF_Vector) {
 			aX += v.x;
 			aY += v.y;
 			aZ += v.z;
@@ -39,14 +60,17 @@ Vector.prototype = {
 		{
 			aX += v[0];
 			aY += v[1];
-			aZ += v[2];
+			if (v.length > 2)
+			{
+				aZ += v[2];
+			}
 		} 
 		else {
 			aX += v;
 			aY += v;
 			aZ += v;
 		}
-		return new Vector(aX, aY, aZ);
+		return new FF_Vector(aX, aY, aZ);
 	},
 
 	sub: function(vector) {
@@ -60,7 +84,7 @@ Vector.prototype = {
 		var sY = this.y - v.y;
 		var sZ = this.z - v.z;
 
-		return new Vector(sX, sY, sZ);
+		return new FF_Vector(sX, sY, sZ);
 	},
 
 	mult: function(scalar) {
@@ -74,7 +98,7 @@ Vector.prototype = {
 		var mY = this.y * scalar;
 		var mZ = this.z * scalar;
 
-		return new Vector(mX, mY, mZ);
+		return new FF_Vector(mX, mY, mZ);
 	},
 
 	div: function(scalar) {
@@ -88,12 +112,12 @@ Vector.prototype = {
 		var dY = this.y / scalar;
 		var dZ = this.z / scalar;
 
-		return new Vector(dX, dY, dZ);
+		return new FF_Vector(dX, dY, dZ);
 	},
 
 	rotate: function(angle) {
 
-		var temp = new Vector(this.x, this.y);
+		var temp = new FF_Vector(this.x, this.y);
 
 		this.x = (temp.x * Math.cos(angle)) - (temp.y * Math.sin(angle));
 		this.y = (temp.x * Math.sin(angle)) + (temp.y * Math.cos(angle));
@@ -124,12 +148,23 @@ Vector.prototype = {
 	},
 
 	get: function() {
-		return new Vector(this.x, this.y, this.z);
+		return new FF_Vector(this.x, this.y, this.z);
 	},
 
 	set : function(x, y, z){
-      	if (x instanceof Vector) { this.set(x.x, x.y, x.z); }
-		else if (x instanceof Array) {  this.set(x[0], x[1], x[2]); }
+      	if (x instanceof FF_Vector) { 
+			  this.set(x.x, x.y, x.z); 
+		}
+		else if (x instanceof Array) {  
+			if (x.length > 2)
+			{
+				this.set(x[0], x[1], x[2]); 
+			}
+			else
+			{
+				this.set(x[0], x[1]);
+			}
+		}
 
 		this.x = x || 0;
 		this.y = y || 0;
@@ -137,7 +172,7 @@ Vector.prototype = {
   },
 
 	crossNew: function(v) {
-		return new Vector(this.y*v.z - this.z*v.y, this.z*v.x - this.x*v.z, this.x*v.y - this.y*v.x);
+		return new FF_Vector(this.y*v.z - this.z*v.y, this.z*v.x - this.x*v.z, this.x*v.y - this.y*v.x);
 		//cross(A, B) = [ a2 * b3 - a3 * b2, a3 * b1 - a1 * b3, a1 * b2 - a2 * b1 ]
 	},
 
@@ -156,7 +191,7 @@ Vector.prototype = {
 	},
 
 	getCopy: function() {
-		return new Vector(this.x, this.y, this.z);
+		return new FF_Vector(this.x, this.y, this.z);
 	}
 };
 
