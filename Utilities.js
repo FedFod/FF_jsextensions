@@ -14,6 +14,19 @@ var FF_Utils =
 	 post();
 	},
 
+	Debug: function(val)
+	{	
+		var tempVal = val;
+		if (!val)
+		{
+			tempVal = "no arg";
+		}
+		var funName = arguments.callee.caller.toString();
+		// funName = funName.substr('function '.length);
+		// funName = funName.substr(0, funName.indexOf('('));
+		this.Print(funName, tempVal);
+	},
+
 	Map: function(value, low1, high1, low2, high2) {
 		return low2 + (high2 - low2) * (value - low1) / (high1 - low1);
 	},
@@ -33,7 +46,16 @@ var FF_Utils =
 	Sign: function(x)
 	{
 		return ((x > 0) - (x < 0)) || +x;
-	}	
+	},
+
+	GetKeyByValue: function(object, value) {
+		for (var prop in object) {
+			if (object.hasOwnProperty(prop)) {
+				if (object[prop] === value)
+				return prop;
+			}
+		}
+	}
 }
 
 // Math.radians = function(degrees) {
